@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>拼图</title>
+	<link rel="stylesheet" href="puzzle2.css">
+</head>
+<body>
+	<p>键盘上下左右控制</p>
+	<img src="3318.jpg" height="200" width="200">
+</body>
+<script  src="http://apps.bdimg.com/libs/jquery/1.9.1/jquery.js"></script>
+<script>
+	var $box=$('<div id="box"></div>');
+	$('body').append($box);
+
+	var array1=[];
+	var array2=[];
+
+	for(i=0;i<4;i++){
+		for(j=0;j<4;j++){
+			array1.push({
+				//node:$child,
+				x:j,
+				y:i
+			});
+			$child=$('<div id="pos-'+i+'-'+j+'"></div>');
+			$box.append($child);
+		}
+	}
+	array1.pop();
+	init(luanxu(array1));
+	function init(arr){
+		for(var n=0;n<15;n++){
+			$('#box div').eq(n).css({left:arr[n].x*100+'px',top:arr[n].y*100+'px'});
+			array2.push({
+				node:$('#box div').eq(n),
+				x:arr[n].x,
+				y:arr[n].y
+			})
+		}
+		$('#box div').eq(15).css({left:300+'px',top:300+'px'});	
+	}
+	//使数组乱序
+	function luanxu(arr){
+		var newarr=[];
+		newarr=arr.sort(function(){
+			return Math.random() - 0.5;
+		})
+		return newarr;
+	}
+	var site={
+		x:3,
+		y:3
+	}
+	document.onkeydown=function (e){
+		var key=e.keyCode;
+		if(key==39){
+			if(site.x==0)return;
+			site.x-=1;
+			$('#box div').eq(15).css({left:site.x*100+'px',top:site.y*100+'px'});
+			array2.forEach(function (m){
+				if(site.x==m.x && site.y==m.y){
+					m.node.css({left:(site.x+1)*100+'px',top:site.y*100+'px'});	
+					m.x=site.x+1;
+					//console.log(m.node);
+				}
+			})	
+		}
+		if(key==40){
+			if(site.y==0)return;
+			site.y-=1;
+			$('#box div').eq(15).css({left:site.x*100+'px',top:site.y*100+'px'});
+			array2.forEach(function (m){
+				if(site.x==m.x && site.y==m.y){
+					m.node.css({left:site.x*100+'px',top:(site.y+1)*100+'px'});
+					m.y=site.y+1;
+					//console.log(m.node);
+				}
+			})			
+		}
+		if(key==37){
+			if(site.x==3)return;
+			site.x+=1;
+			
+			$('#box div').eq(15).css({left:site.x*100+'px',top:site.y*100+'px'});
+			array2.forEach(function (m){
+				if(site.x==m.x && site.y==m.y){
+					m.node.css({left:(site.x-1)*100+'px',top:site.y*100+'px'});
+					m.x=site.x-1;
+					//console.log(m.node);
+				}
+			})			
+		}
+		if(key==38){
+			if(site.y==3)return;
+			site.y+=1;
+			
+			$('#box div').eq(15).css({left:site.x*100+'px',top:site.y*100+'px'});
+			array2.forEach(function (m){
+				if(site.x==m.x && site.y==m.y){
+					m.node.css({left:site.x*100+'px',top:(site.y-1)*100+'px'});
+					m.y=site.y-1;
+					//console.log(m.node);
+				}
+			})			
+		}
+	}
+</script>
+</html>
